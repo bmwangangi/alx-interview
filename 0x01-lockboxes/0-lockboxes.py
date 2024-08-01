@@ -1,18 +1,27 @@
 #!/usr/bin/python3
+'''LockBoxes Challenge'''
+
 def canUnlockAll(boxes):
-    n = len(boxes)
-    visited = [False] * n
-    visited[0] = True
-    queue = [0]
+    '''Determines if all the boxes can be opened or not
+    Args:
+        boxes (list): List of lists containing the keys in each box
+    Returns:
+        bool: True if all boxes can be opened, False otherwise
+    '''
+    if not boxes:
+        return False
     
-    while queue:
-        current_box = queue.pop(0)
-        for key in boxes[current_box]:
-            if key < n and not visited[key]:
-                visited[key] = True
-                queue.append(key)
+    length = len(boxes)
+    opened_boxes = set([0])  # Start with the first box already opened
+    keys = list(boxes[0])  # Initialize with keys from the first box
     
-    return all(visited)
+    while keys:
+        key = keys.pop()
+        if key < length and key not in opened_boxes:
+            opened_boxes.add(key)
+            keys.extend(boxes[key])
+    
+    return len(opened_boxes) == length
 
 # Test cases
 if __name__ == "__main__":
